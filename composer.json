@@ -1,0 +1,22 @@
+{
+    "name": "hexlet/code",
+    "bin": [
+        "bin/gendiff"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Hexlet\\Code\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dmitry",
+            "email": "usefullforit@gmail.com"
+        }
+    ],
+    "description": "hexlet project2",
+    "license": "MIT",
+    "require": {
+        "docopt/docopt": "^1.0"
+    }
+}
