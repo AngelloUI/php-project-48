@@ -6,12 +6,11 @@ namespace Differ\Differ;
 
 function genDiff(string $filePath1, string $filePath2, string $format = 'stylish'): string
 {
-    /*
-    $filePath1 = __DIR__ . "/../../$filePath1";
-    $filePath2 = __DIR__ . "/../../$filePath2";
-    */
-    $parsedData1 = parseJson($filePath1);
-    $parsedData2 = parseJson($filePath2);
+    $parsedData1 = (getFileExtension($filePath1) === "json") ? parseJson($filePath1) : parseYaml($filePath1);
+    $parsedData2 = (getFileExtension($filePath2) === "json") ? parseJson($filePath2) : parseYaml($filePath2);
+
+    var_dump($parsedData1);
+    var_dump($parsedData2);
 
     return buildDiffTree($parsedData1, $parsedData2);
 }
