@@ -3,6 +3,8 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use function Differ\Differ\genDiff;
+
 $doc = <<<DOC
 Generate diff
 
@@ -18,12 +20,5 @@ Options:
 
 DOC;
 
-$args = Docopt::handle($doc, array('version'=>'gendiff v0'));
-foreach ($args as $k=>$v)
-    echo $k.': '.json_encode($v).PHP_EOL;
-
-$firstFile = parse((string)$args['<firstFile>']);
-$secondFile = parse((string)$args['<secondFile>']);
-
-printFileData($firstFile);
-printFileData($secondFile);
+$args = Docopt::handle($doc)->args;
+print_r(genDiff((string)$args['<firstFile>'], (string)$args['<secondFile>']));

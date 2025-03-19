@@ -1,10 +1,13 @@
 <?php
-function parse(string $filePath): mixed
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+function parseJson(string $filePath): mixed
 {
     if (!realpath($filePath)) {
         return null;
     }
-    
+
     $data = file_get_contents(realpath($filePath));
     return json_decode($data, true);
 }

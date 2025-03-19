@@ -8,6 +8,7 @@
             "Hexlet\\Code\\": "src/"
         },
         "files": [
+            "src/Differ/generate-difference.php",
             "src/functions.php"
         ]
     },
