@@ -18,10 +18,9 @@ function buildDiffTree(array $parsedData1, array $parsedData2): string
     $keys = array_unique(array_merge(array_keys($parsedData1), array_keys($parsedData2)));
     sort($keys);
 
-    $diffTree = array_reduce($keys,function ($diffTree ,$key) use ($parsedData1, $parsedData2){
+    $diffTree = array_reduce($keys, function ($diffTree, $key) use ($parsedData1, $parsedData2) {
 
         if (array_key_exists($key, $parsedData1) && array_key_exists($key, $parsedData2)) {
-
             if ($parsedData1[$key] === $parsedData2[$key]) {
                 $diffTree["  $key"] = $parsedData1[$key];
             } else {
