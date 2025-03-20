@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../../vendor/autoload.php';
-
 function formatter(string $format, array $diffTree): ?string
 {
     switch ($format) {
