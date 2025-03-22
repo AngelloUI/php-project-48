@@ -3,24 +3,26 @@
 function formatterToStylish(array $diffTree, int $depth = 1): string
 {
     $indentSize = 4;
-    $currentIndent = str_repeat(' ', max(0, $indentSize * ($depth - 1)));
-    $lines = array_map(function ($node) use ($depth, $currentIndent) {
+    $baseIndent = str_repeat(' ', $indentSize * ($depth - 1));
+    $signIndent = str_repeat(' ', $indentSize * $depth - 2);
+
+    $lines = array_map(function ($node) use ($depth, $baseIndent, $signIndent) {
         $key = $node['key'];
 
         switch ($node['type']) {
             case 'added':
-                return "{$currentIndent}+ {$key}: " . valueToStylishFotmat($node['value'], $depth);
+                return "{$signIndent}+ {$key}: " . valueToStylishFotmat($node['value'], $depth);
             case 'removed':
-                return "{$currentIndent}- {$key}: " . valueToStylishFotmat($node['value'], $depth);
+                return "{$signIndent}- {$key}: " . valueToStylishFotmat($node['value'], $depth);
             case 'unchanged':
-                return "{$currentIndent}  {$key}: " . valueToStylishFotmat($node['value'], $depth);
+                return "{$baseIndent}  {$key}: " . valueToStylishFotmat($node['value'], $depth);
             case 'updated':
                 $oldValue = valueToStylishFotmat($node['oldValue'], $depth);
                 $newValue = valueToStylishFotmat($node['newValue'], $depth);
-                return "{$currentIndent}- {$key}: {$oldValue}\n{$currentIndent}+ {$key}: {$newValue}";
+                return "{$signIndent}- {$key}: {$oldValue}\n{$signIndent}+ {$key}: {$newValue}";
             case 'nested':
                 $children = formatterToStylish($node['nodes'], $depth + 1);
-                return "{$currentIndent}  {$key}: {\n{$children}\n{$currentIndent}  }";
+                return "{$baseIndent}  {$key}: {\n{$children}\n{$baseIndent}  }";
         }
 
         return '';

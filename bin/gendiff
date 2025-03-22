@@ -21,4 +21,4 @@ Options:
 DOC;
 
 $args = Docopt::handle($doc)->args;
-var_dump(genDiff((string)$args['<firstFile>'], (string)$args['<secondFile>'], (string)$args['--format']));
+print_r(genDiff((string)$args['<firstFile>'], (string)$args['<secondFile>'], (string)$args['--format']));
