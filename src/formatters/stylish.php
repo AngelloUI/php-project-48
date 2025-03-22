@@ -26,7 +26,7 @@ function formatterToStylish(array $diffTree, int $depth = 1): string
         return '';
     }, $diffTree);
 
-    return implode("\n", $lines);
+    return "{\n" . implode("\n", $lines) . "\n}";
 }
 
 function valueToStylishFotmat($value, int $depth): string
