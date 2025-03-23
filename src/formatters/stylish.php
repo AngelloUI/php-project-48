@@ -1,13 +1,14 @@
 <?php
 
-function formatterToStylish(array $diff, int $depth = 1): string {
+function formatterToStylish(array $diff, int $depth = 1): string
+{
     $indent = str_repeat("    ", $depth - 1);
     $result = ["{"];
 
     foreach ($diff as $item) {
         $key = $item['key'];
         $type = $item['type'];
-        
+
         switch ($type) {
             case 'added':
                 $value = formatValue($item['value'], $depth + 1);
@@ -38,7 +39,8 @@ function formatterToStylish(array $diff, int $depth = 1): string {
     return implode("\n", $filteredResult) . "\n$indent}";
 }
 
-function formatValue($value, int $depth): string {
+function formatValue($value, int $depth): string
+{
     if (is_array($value)) {
         return formatterToStylish(array_map(fn($k, $v) => ['key' => $k, 'value' => $v, 'type' => 'unchanged'], array_keys($value), $value), $depth);
     }
