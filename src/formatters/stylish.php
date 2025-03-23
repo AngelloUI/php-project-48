@@ -1,58 +1,51 @@
 <?php
 
-function formatterToStylish(array $diffTree, int $depth = 1): string
-{
-    $indentSize = 4;
-    $baseIndent = str_repeat(' ', $indentSize * ($depth - 1));
-    $signIndent = str_repeat(' ', $indentSize * $depth - 2);
+function formatterToStylish(array $diff, int $depth = 1): string {
+    $indent = str_repeat("    ", $depth - 1);
+    $result = ["{"];
 
-    $lines = array_map(function ($node) use ($depth, $baseIndent, $signIndent) {
-        $key = $node['key'];
-
-        switch ($node['type']) {
+    foreach ($diff as $item) {
+        $key = $item['key'];
+        $type = $item['type'];
+        
+        switch ($type) {
             case 'added':
-                return "{$signIndent}+ {$key}: " . valueToStylishFotmat($node['value'], $depth);
+                $value = formatValue($item['value'], $depth + 1);
+                $result[] = "$indent  + $key: $value";
+                break;
             case 'removed':
-                return "{$signIndent}- {$key}: " . valueToStylishFotmat($node['value'], $depth);
-            case 'unchanged':
-                return "{$baseIndent}  {$key}: " . valueToStylishFotmat($node['value'], $depth);
+                $value = formatValue($item['value'], $depth + 1);
+                $result[] = "$indent  - $key: $value";
+                break;
             case 'updated':
-                $oldValue = valueToStylishFotmat($node['oldValue'], $depth);
-                $newValue = valueToStylishFotmat($node['newValue'], $depth);
-                return "{$signIndent}- {$key}: {$oldValue}\n{$signIndent}+ {$key}: {$newValue}";
+                $oldValue = formatValue($item['oldValue'], $depth + 1);
+                $newValue = formatValue($item['newValue'], $depth + 1);
+                $result[] = "$indent  - $key: $oldValue";
+                $result[] = "$indent  + $key: $newValue";
+                break;
+            case 'unchanged':
+                $value = formatValue($item['value'], $depth + 1);
+                $result[] = "$indent    $key: $value";
+                break;
             case 'nested':
-                $children = formatterToStylish($node['nodes'], $depth + 1);
-                return "{$baseIndent}  {$key}: {\n{$children}\n{$baseIndent}  }";
+                $nested = formatterToStylish($item['nodes'], $depth + 1);
+                $result[] = "$indent    $key: $nested";
+                break;
         }
+    }
 
-        return '';
-    }, $diffTree);
-
-    return "{\n" . implode("\n", $lines) . "\n}";
+    $filteredResult = array_filter($result, fn($line) => trim($line) !== "");
+    return implode("\n", $filteredResult) . "\n$indent}";
 }
 
-function valueToStylishFotmat($value, int $depth): string
-{
+function formatValue($value, int $depth): string {
     if (is_array($value)) {
-        $indentSize = 4;
-        $currentIndent = str_repeat(' ', $indentSize * $depth);
-        $bracketIndent = str_repeat(' ', $indentSize * ($depth - 1));
-        $lines = array_map(
-            fn($key, $val) => "{$currentIndent}{$key}: " . valueToStylishFotmat($val, $depth + 1),
-            array_keys($value),
-            $value
-        );
-
-        return "{\n" . implode("\n", $lines) . "\n{$bracketIndent}}";
+        return formatterToStylish(array_map(fn($k, $v) => ['key' => $k, 'value' => $v, 'type' => 'unchanged'], array_keys($value), $value), $depth);
     }
-
-    if (is_bool($value)) {
-        return $value ? 'true' : 'false';
-    }
-
-    if ($value === null) {
-        return 'null';
-    }
-
-    return (string) $value;
+    return match (gettype($value)) {
+        'NULL' => 'null',
+        'boolean' => $value ? 'true' : 'false',
+        'string' => $value,
+        default => (string) $value,
+    };
 }
