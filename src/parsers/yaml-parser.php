@@ -4,9 +4,10 @@ use Symfony\Component\Yaml\Yaml;
 
 function parseYaml(string $filePath): mixed
 {
-    if (!realpath($filePath)) {
+    $realPath = realpath($filePath);
+    if ($realPath === false) {
         return null;
     }
 
-    return Yaml::parseFile($filePath, Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
+    return Yaml::parseFile($realPath, Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
 }

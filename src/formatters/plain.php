@@ -27,7 +27,7 @@ function formatterToPlain(array $diffTree, string $parentPath = ''): string
     return implode("\n", array_filter($lines));
 }
 
-function valueToPlainFormat($value): string
+function valueToPlainFormat(mixed $value): string
 {
     if (is_array($value)) {
         return "[complex value]";

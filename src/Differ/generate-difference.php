@@ -15,7 +15,8 @@ function genDiff(string $filePath1, string $filePath2, string $format = 'stylish
 function buildDiffTree(array $parsedData1, array $parsedData2): array
 {
     $keys = array_unique(array_merge(array_keys($parsedData1), array_keys($parsedData2)));
-    $sortedKeys = $keys;
+    $sortedKeys = array_values($keys);
+    $sortedKeys = array_map(null, $sortedKeys);
     sort($sortedKeys);
 
     $diffTree = array_map(function ($key) use ($parsedData1, $parsedData2) {
