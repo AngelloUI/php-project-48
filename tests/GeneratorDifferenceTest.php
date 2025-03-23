@@ -3,6 +3,7 @@
 namespace Test\GenDiffer;
 
 use PHPUnit\Framework\TestCase;
+
 use function Differ\Differ\genDiff;
 
 class GeneratorDifferenceTest extends TestCase
@@ -26,5 +27,4 @@ class GeneratorDifferenceTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
-
 }
