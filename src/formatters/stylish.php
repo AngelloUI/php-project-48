@@ -28,7 +28,7 @@ function formatterToStylish(array $diff, int $depth = 1): string
 }
 
 
-function formatValue($value, int $depth): string
+function formatValue(mixed $value, int $depth): string
 {
     if (is_array($value)) {
         return formatterToStylish(array_map(fn($k, $v) => ['key' => $k, 'value' => $v, 'type' => 'unchanged'], array_keys($value), $value), $depth);
