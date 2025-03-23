@@ -8,5 +8,5 @@ function parseYaml(string $filePath): mixed
         return null;
     }
 
-    return get_object_vars(Yaml::parseFile($filePath, Yaml::PARSE_OBJECT_FOR_MAP));
+    return Yaml::parseFile($filePath, Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
 }
