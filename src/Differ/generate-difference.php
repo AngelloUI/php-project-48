@@ -15,13 +15,11 @@ function genDiff(string $filePath1, string $filePath2, string $format = 'stylish
 function buildDiffTree(array $parsedData1, array $parsedData2): array
 {
     $keys = array_unique(array_merge(array_keys($parsedData1), array_keys($parsedData2)));
-    $sortedKeys = array_reduce($keys, function ($carry, $key) {
-        $carry[] = $key;
-        return $carry;
-    }, []);
-
+    /*
+    $sortedKeys = array_values($keys);
     usort($sortedKeys, fn($a, $b) => $a <=> $b);
-
+    */
+    $sortedKeys = MSort(array_values($keys));
     return array_map(function ($key) use ($parsedData1, $parsedData2) {
         $value1 = $parsedData1[$key] ?? null;
         $value2 = $parsedData2[$key] ?? null;
