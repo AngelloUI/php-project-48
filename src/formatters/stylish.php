@@ -3,7 +3,7 @@
 function formatterToStylish(array $diff, int $depth = 1): string
 {
     $indent = str_repeat("    ", $depth - 1);
-    
+
     $result = array_merge(
         ["{"],
         ...array_map(function ($item) use ($depth, $indent) {
