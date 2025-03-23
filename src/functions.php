@@ -6,8 +6,3 @@ function getFileExtension(string $filePath): string
 
     return $extension;
 }
-
-function printFileData(array $data): void
-{
-    var_dump($data);
-}

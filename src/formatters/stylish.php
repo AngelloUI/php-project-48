@@ -3,41 +3,30 @@
 function formatterToStylish(array $diff, int $depth = 1): string
 {
     $indent = str_repeat("    ", $depth - 1);
-    $result = ["{"];
+    
+    $result = array_merge(
+        ["{"],
+        ...array_map(function ($item) use ($depth, $indent) {
+            $key = $item['key'];
+            $type = $item['type'];
 
-    foreach ($diff as $item) {
-        $key = $item['key'];
-        $type = $item['type'];
+            return match ($type) {
+                'added'    => ["$indent  + $key: " . formatValue($item['value'], $depth + 1)],
+                'removed'  => ["$indent  - $key: " . formatValue($item['value'], $depth + 1)],
+                'updated'  => [
+                    "$indent  - $key: " . formatValue($item['oldValue'], $depth + 1),
+                    "$indent  + $key: " . formatValue($item['newValue'], $depth + 1),
+                ],
+                'unchanged' => ["$indent    $key: " . formatValue($item['value'], $depth + 1)],
+                'nested'    => ["$indent    $key: " . formatterToStylish($item['nodes'], $depth + 1)],
+                default     => [],
+            };
+        }, $diff)
+    );
 
-        switch ($type) {
-            case 'added':
-                $value = formatValue($item['value'], $depth + 1);
-                $result[] = "$indent  + $key: $value";
-                break;
-            case 'removed':
-                $value = formatValue($item['value'], $depth + 1);
-                $result[] = "$indent  - $key: $value";
-                break;
-            case 'updated':
-                $oldValue = formatValue($item['oldValue'], $depth + 1);
-                $newValue = formatValue($item['newValue'], $depth + 1);
-                $result[] = "$indent  - $key: $oldValue";
-                $result[] = "$indent  + $key: $newValue";
-                break;
-            case 'unchanged':
-                $value = formatValue($item['value'], $depth + 1);
-                $result[] = "$indent    $key: $value";
-                break;
-            case 'nested':
-                $nested = formatterToStylish($item['nodes'], $depth + 1);
-                $result[] = "$indent    $key: $nested";
-                break;
-        }
-    }
-
-    $filteredResult = array_filter($result, fn($line) => trim($line) !== "");
-    return implode("\n", $filteredResult) . "\n$indent}";
+    return implode("\n", $result) . "\n$indent}";
 }
+
 
 function formatValue($value, int $depth): string
 {
