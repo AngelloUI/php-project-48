@@ -10,12 +10,12 @@
         "files": [
             "src/Differ/Differ.php",
             "src/functions.php",
-            "src/parsers/json-parser.php",
-            "src/parsers/yaml-parser.php",
+            "src/parsers/json_parser.php",
+            "src/parsers/yaml_parser.php",
             "src/Differ/diff_tree_functions.php",
-            "src/formatters/json.php",
-            "src/formatters/plain.php",
-            "src/formatters/stylish.php"
+            "src/formatters/json_formatter.php",
+            "src/formatters/plain_formatter.php",
+            "src/formatters/stylish_formatter.php"
         ]
     },
     "authors": [

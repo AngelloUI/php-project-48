@@ -7,6 +7,7 @@ use Symfony\Component\Yaml\Yaml;
 function parseYaml(string $filePath): mixed
 {
     $realPath = realpath($filePath);
+
     if ($realPath === false) {
         return null;
     }

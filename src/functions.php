@@ -22,14 +22,19 @@ function mSort(array $array): array
 
 function formatter(string $format, array $diffTree): ?string
 {
-    switch ($format) {
-        case 'json':
-            return formatterToJson($diffTree);
-        case 'plain':
-            return formatterToPlain($diffTree);
-        case 'stylish':
-            return formatterToStylish($diffTree);
-    }
+    return match ($format) {
+        'json' => formatterToJson($diffTree),
+        'plain' => formatterToPlain($diffTree),
+        'stylish' => formatterToStylish($diffTree),
+        default => null,
+    };
+}
 
-    return null;
+function parse(string $filePath): mixed
+{
+    return match (getFileExtension($filePath)) {
+        'json' => parseJson($filePath),
+        'yaml' => parseYaml($filePath),
+        default => null,
+    };
 }

@@ -52,6 +52,7 @@ function buildDiffTree(array $parsedData1, array $parsedData2): array
 {
     $keys = array_unique(array_merge(array_keys($parsedData1), array_keys($parsedData2)));
     $sortedKeys = mSort(array_values($keys));
+
     return array_map(function ($key) use ($parsedData1, $parsedData2) {
         $value1 = $parsedData1[$key] ?? null;
         $value2 = $parsedData2[$key] ?? null;
