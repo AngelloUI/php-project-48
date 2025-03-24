@@ -8,12 +8,11 @@
             "Hexlet\\Code\\": "src/"
         },
         "files": [
-            "src/Differ/generate-difference.php",
+            "src/Differ/Differ.php",
             "src/functions.php",
             "src/parsers/json-parser.php",
             "src/parsers/yaml-parser.php",
-            "src/Differ/diff-tree.php",
-            "src/formatters/formatter.php",
+            "src/Differ/diff_tree_functions.php",
             "src/formatters/json.php",
             "src/formatters/plain.php",
             "src/formatters/stylish.php"

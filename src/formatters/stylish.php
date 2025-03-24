@@ -1,6 +1,8 @@
 <?php
 
-function formatterToStylish(array $diff, int $depth = 1): string
+declare(strict_types=1);
+
+function formatterToStylish(array $diffTree, int $depth = 1): string
 {
     $indent = str_repeat("    ", $depth - 1);
 
@@ -21,7 +23,7 @@ function formatterToStylish(array $diff, int $depth = 1): string
                 'nested'    => ["$indent    $key: " . formatterToStylish($item['nodes'], $depth + 1)],
                 default     => [],
             };
-        }, $diff)
+        }, $diffTree)
     );
 
     return implode("\n", $result) . "\n$indent}";

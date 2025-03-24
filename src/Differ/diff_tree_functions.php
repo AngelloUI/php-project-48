@@ -2,24 +2,56 @@
 
 declare(strict_types=1);
 
-namespace Differ\Differ;
-
-function genDiff(string $filePath1, string $filePath2, string $format = 'stylish'): string
+function mkAddedElementNode(string $key, mixed $value): array
 {
-    $parsedData1 = (getFileExtension($filePath1) === "json") ? parseJson($filePath1) : parseYaml($filePath1);
-    $parsedData2 = (getFileExtension($filePath2) === "json") ? parseJson($filePath2) : parseYaml($filePath2);
+    return [
+        "key" => $key,
+        "value" => $value,
+        "type" => "added",
+    ];
+}
 
-    return formatter($format, buildDiffTree($parsedData1, $parsedData2));
+function mkRemovedElementNode(string $key, mixed $value): array
+{
+    return [
+        "key" => $key,
+        "value" => $value,
+        "type" => "removed"
+    ];
+}
+
+function mkUpdatedElementNode(string $key, mixed $oldValue, mixed $newValue): array
+{
+    return [
+        "key" => $key,
+        "oldValue" => $oldValue,
+        "newValue" => $newValue,
+        "type" => "updated"
+    ];
+}
+
+function mkUnchangedElementNode(string $key, mixed $value): array
+{
+    return [
+        "key" => $key,
+        "value" => $value,
+        "type" => "unchanged"
+    ];
+}
+
+function mkNestedElementNode(string $key, array $nodes): array
+{
+    return [
+        "key" => $key,
+        "nodes" => $nodes,
+        "type" => "nested"
+    ];
 }
 
 function buildDiffTree(array $parsedData1, array $parsedData2): array
 {
     $keys = array_unique(array_merge(array_keys($parsedData1), array_keys($parsedData2)));
-    /*
-    $sortedKeys = array_values($keys);
-    usort($sortedKeys, fn($a, $b) => $a <=> $b);
-    */
-    $sortedKeys = MSort(array_values($keys));
+    $sortedKeys = mSort(array_values($keys));
     return array_map(function ($key) use ($parsedData1, $parsedData2) {
         $value1 = $parsedData1[$key] ?? null;
         $value2 = $parsedData2[$key] ?? null;

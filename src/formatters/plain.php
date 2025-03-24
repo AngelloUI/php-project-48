@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 function formatterToPlain(array $diffTree, string $parentPath = ''): string
 {
     $lines = array_map(function ($node) use ($parentPath) {

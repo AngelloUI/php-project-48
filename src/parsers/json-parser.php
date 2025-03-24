@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 function parseJson(string $filePath): mixed
 {
     $realPath = realpath($filePath);
