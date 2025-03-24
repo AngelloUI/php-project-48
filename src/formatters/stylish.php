@@ -29,11 +29,11 @@ function formatterToStylish(array $diffTree, int $depth = 1): string
     return implode("\n", $result) . "\n$indent}";
 }
 
-
 function formatValue(mixed $value, int $depth): string
 {
     if (is_array($value)) {
-        return formatterToStylish(array_map(fn($k, $v) => ['key' => $k, 'value' => $v, 'type' => 'unchanged'], array_keys($value), $value), $depth);
+        return formatterToStylish(array_map(fn($k, $v) =>
+        ['key' => $k, 'value' => $v, 'type' => 'unchanged'], array_keys($value), $value), $depth);
     }
     return match (gettype($value)) {
         'NULL' => 'null',
